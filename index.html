@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync Website</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Basic Setup --- */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #1d1d1d; /* Dark background for the page */
+            color: #ffffff;
+            /* Center the navbar vertically and horizontally */
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- Navbar Container --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background-color: #151515; /* Dark grey for the navbar */
+            padding: 12px 14px;
+            border-radius: 10px; /* Fully rounded corners */
+            
+            /* Sizing and Centering */
+            max-width: 600px;
+            width: 90%; /* Responsive width for smaller screens */
+            box-sizing: border-box; /* Ensures padding is included in the width */
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* --- Logo Styling --- */
+        .logo {
+            font-size: 1rem; /* 24px */
+            font-weight: 500;
+            color: #e3e3e3;
+            text-decoration: none;
+        }
+
+        /* --- Toggle Button Styling --- */
+        .toggle-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px; /* Adds clickable area */
+            display: flex;
+            flex-direction: column;
+            gap: 4px; /* Space between the two lines */
+        }
+
+        .toggle-button .line {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: transform 0.3s ease; /* Smooth animation for future use */
+        }
+        .sidebar {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #151515;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        .sidebar.active {
+            transform: translateX(0);
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+        }
+        .sidebar span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: #ffffff;
+            border-radius: 2px;
+        }
+        .sidebar-content {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sidebar-content a {
+            color: #e3e3e3;
+            text-decoration: none;
+            font-size: 3rem;
+            font-weight: 500;
+        }
+
+        #container {
+            width: 100%;
+            height: 100vh;
+            background-color: #e3e3e3;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-container"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M160-400q-33 0-56.5-23.5T80-480q0-33 23.5-56.5T160-560q33 0 56.5 23.5T240-480q0 33-23.5 56.5T160-400Zm66 228-56-56 174-174 56 56-174 174Zm120-388L172-734l56-56 174 174-56 56ZM480-80q-33 0-56.5-23.5T400-160q0-33 23.5-56.5T480-240q33 0 56.5 23.5T560-160q0 33-23.5 56.5T480-80Zm0-640q-33 0-56.5-23.5T400-800q0-33 23.5-56.5T480-880q33 0 56.5 23.5T560-800q0 33-23.5 56.5T480-720Zm134 162-56-58 176-174 56 56-176 176Zm120 386L560-346l56-56 174 174-56 56Zm66-228q-33 0-56.5-23.5T720-480q0-33 23.5-56.5T800-560q33 0 56.5 23.5T880-480q0 33-23.5 56.5T800-400Z"/></svg>
+            <a href="#" class="logo">LOG STREAM&trade;</a>
+        </div>
+        <button class="toggle-button" aria-label="Open menu" onclick="toggleSidebar()">
+            <span class="line"></span>
+            <span class="line"></span>
+        </button>
+    </nav>
+    <div class="sidebar">
+
+        <div class="sidebar-header">        <button class="close-button" aria-label="Close menu" onclick="closeSidebar()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="42px" viewBox="0 -960 960 960" width="42px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        </button>
+           <div class="sidebar-content">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+           </div>
+        </div>
+    </div>
+
+
+
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar').classList.toggle('active');
+        gsap.to('.sidebar', {
+            duration: 0.3,
+            ease: "expoScale(0.5,7,none)",
+            x: 0
+        });
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('active');
+        gsap.to('.sidebar', {
+            duration: 0.3,
+            ease: "expoScale(0.9,10,none)",
+            x: "-100%"
+        });
+
+    }
+
+
+</script>
+</body>
+</html>
