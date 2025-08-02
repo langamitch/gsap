@@ -1,599 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Your Ad - Payment Form</title>
-    <style>
-        /* General Styling */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f7f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .form-container {
-            background: #ffffff;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            list-style: none;
-            padding: 0;
-        }
-
-        .progress-bar .step {
-            text-align: center;
-            flex-grow: 1;
-            position: relative;
-        }
-
-        .progress-bar .step-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #e0e0e0;
-            color: #ffffff;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            border: 2px solid #e0e0e0;
-            transition: all 0.3s ease;
-        }
-
-        .progress-bar .step-label {
-            display: block;
-            margin-top: 8px;
-            font-size: 12px;
-            color: #999;
-            transition: all 0.3s ease;
-        }
-
-        .progress-bar .step.active .step-icon {
-            background: #3498db;
-            border-color: #3498db;
-        }
-        
-        .progress-bar .step.completed .step-icon {
-            background: #2ecc71;
-            border-color: #2ecc71;
-        }
-
-        .progress-bar .step.active .step-label {
-            color: #3498db;
-            font-weight: bold;
-        }
-        
-        .progress-bar .step.completed .step-label {
-            color: #2c3e50;
-        }
-
-        /* Form Steps */
-        .form-step {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .form-step.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 {
-            font-size: 1.5em;
-            color: #34495e;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1em;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .input-error {
-            border-color: #e74c3c;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            font-size: 0.875em;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        /* Buttons */
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .btn-next {
-            background-color: #3498db;
-            color: #fff;
-        }
-        
-        .btn-next:hover {
-            background-color: #2980b9;
-        }
-
-        .btn-prev {
-            background-color: #e0e0e0;
-            color: #333;
-        }
-        
-        .btn-prev:hover {
-            background-color: #bdbdbd;
-        }
-
-        .btn-submit {
-            background-color: #2ecc71;
-            color: #fff;
-            width: 100%;
-        }
-
-        .btn-submit:hover {
-            background-color: #27ae60;
-        }
-        
-        /* Specific Section Styling */
-        .pricing-summary ul {
-            list-style: none;
-            padding: 0;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-        }
-        .pricing-summary li {
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .pricing-summary li:last-child {
-            border-bottom: none;
-        }
-        .pricing-summary .total {
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #2c3e50;
-        }
-        
-        .payment-methods {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .payment-method {
-            flex: 1;
-            padding: 15px;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .payment-method.selected {
-            border-color: #3498db;
-            background-color: #f0f8ff;
-        }
-        
-        #card-details {
-           border: 1px solid #ccc;
-           padding: 20px;
-           border-radius: 6px;
-           background-color: #fafafa;
-        }
-        
-        .secure-payment-info {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-        }
-        
-        .checkbox-group input {
-            margin-right: 10px;
-        }
-        
-        /* Loader/Spinner */
-        .loader-container {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .loader {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loader-container p {
-            margin-top: 20px;
-            font-size: 1.1em;
-            color: #555;
-        }
-
-        #success-message {
-            display: none;
-            text-align: center;
-            padding: 40px;
-        }
-        
-        #success-message .icon {
-            font-size: 5em;
-            color: #2ecc71;
-        }
-    </style>
+  <title>Post Ad with Payment</title>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+  <style>
+    body { font-family: Arial; max-width: 600px; margin: auto; padding: 20px; }
+    input, textarea, select, button {
+      width: 100%; padding: 10px; margin: 10px 0;
+      border-radius: 4px; border: 1px solid #ccc;
+    }
+    button { background: #27ae60; color: white; font-weight: bold; }
+    h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+  </style>
 </head>
 <body>
 
-    <div class="form-container">
-        <h1>Post Your Ad</h1>
+  <form id="adForm">
+    <h2>1. Ad Details</h2>
+    <input type="text" id="adTitle" placeholder="Ad Title" required />
+    <textarea id="adDesc" placeholder="Ad Description" required></textarea>
+    <select id="adCategory" required>
+      <option value="">Select Category</option>
+      <option value="cars">Cars</option>
+      <option value="real_estate">Real Estate</option>
+      <option value="jobs">Jobs</option>
+    </select>
+    <select id="adDuration" required>
+      <option value="7">7 Days</option>
+      <option value="30">30 Days</option>
+    </select>
 
-        <ul class="progress-bar">
-            <li class="step active" data-step="1">
-                <div class="step-icon">1</div>
-                <div class="step-label">Ad Details</div>
-            </li>
-            <li class="step" data-step="2">
-                <div class="step-icon">2</div>
-                <div class="step-label">Your Info</div>
-            </li>
-            <li class="step" data-step="3">
-                <div class="step-icon">3</div>
-                <div class="step-label">Summary</div>
-            </li>
-            <li class="step" data-step="4">
-                <div class="step-icon">4</div>
-                <div class="step-label">Payment</div>
-            </li>
-        </ul>
+    <h2>2. User Info</h2>
+    <input type="text" id="fullName" placeholder="Full Name" required />
+    <input type="email" id="email" placeholder="Email Address" required />
+    <input type="text" id="phone" placeholder="Phone Number" required />
 
-        <form id="ad-payment-form">
-            <div class="form-step active" id="step-1">
-                <h2>1. Ad Details</h2>
-                <div class="form-group">
-                    <label for="ad-title">Ad Title</label>
-                    <input type="text" id="ad-title" name="ad_title" required>
-                    <div class="error-message">Title is required.</div>
-                </div>
-                <div class="form-group">
-                    <label for="ad-description">Ad Description</label>
-                    <textarea id="ad-description" name="ad_description" required></textarea>
-                    <div class="error-message">Description is required.</div>
-                </div>
-                 <div class="form-group">
-                    <label for="ad-category">Category</label>
-                    <select id="ad-category" name="ad_category" required>
-                        <option value="">-- Select a Category --</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="vehicles">Vehicles</option>
-                        <option value="property">Property</option>
-                        <option value="services">Services</option>
-                    </select>
-                    <div class="error-message">Please select a category.</div>
-                </div>
-                <div class="form-group">
-                    <label for="ad-plan">Ad Plan</label>
-                    <select id="ad-plan" name="ad_plan" required>
-                        <option value="7.99" data-name="Basic Ad">Basic Ad - $7.99</option>
-                        <option value="19.99" data-name="Featured Ad">Featured Ad - $19.99</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="ad-duration">Ad Duration</label>
-                    <select id="ad-duration" name="ad_duration" required>
-                        <option value="1" data-name="30 Days">30 Days (Standard)</option>
-                        <option value="1.5" data-name="60 Days">60 Days (+50% Cost)</option>
-                        <option value="2" data-name="90 Days">90 Days (+100% Cost)</option>
-                    </select>
-                </div>
-                <div class="button-group">
-                    <button type="button" class="btn btn-next">Next &rarr;</button>
-                </div>
-            </div>
+    <h2>3. Pricing</h2>
+    <select id="adPlan" required>
+      <option value="1000">Basic - R10</option>
+      <option value="3000">Featured - R30</option>
+    </select>
 
-            <div class="form-step" id="step-2">
-                <h2>2. Your Information</h2>
-                <div class="form-group">
-                    <label for="full-name">Full Name</label>
-                    <input type="text" id="full-name" name="full_name" required>
-                     <div class="error-message">Full name is required.</div>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
-                     <div class="error-message">A valid email is required for your receipt.</div>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number (Optional)</label>
-                    <input type="tel" id="phone" name="phone">
-                </div>
-                <div class="button-group">
-                    <button type="button" class="btn btn-prev">&larr; Previous</button>
-                    <button type="button" class="btn btn-next">Next &rarr;</button>
-                </div>
-            </div>
+    <h2>4. Agreement</h2>
+    <label>
+      <input type="checkbox" id="agree" required />
+      I agree to the Terms and Conditions
+    </label>
 
-            <div class="form-step" id="step-3">
-                <h2>3. Pricing Summary</h2>
-                <div class="pricing-summary">
-                    <ul>
-                        <li><span>Ad Plan</span> <span id="summary-plan"></span></li>
-                        <li><span>Duration</span> <span id="summary-duration"></span></li>
-                        <li class="total"><span>Total</span> <span id="summary-total"></span></li>
-                    </ul>
-                </div>
-                <div class="button-group">
-                    <button type="button" class="btn btn-prev">&larr; Previous</button>
-                    <button type="button" class="btn btn-next">Proceed to Payment &rarr;</button>
-                </div>
-            </div>
+    <button type="submit">Pay & Post Ad</button>
+  </form>
 
-            <div class="form-step" id="step-4">
-                <h2>4. Secure Payment</h2>
-                
-                <div id="card-details">
-                    <div class="form-group">
-                        <label for="card-number">Card Number</label>
-                        <input type="text" id="card-number" placeholder="•••• •••• •••• ••••" required>
-                        <div class="error-message">Card number is required.</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="card-holder">Cardholder Name</label>
-                        <input type="text" id="card-holder" placeholder="John Doe" required>
-                        <div class="error-message">Cardholder name is required.</div>
-                    </div>
-                    <div style="display: flex; gap: 15px;">
-                        <div class="form-group" style="flex: 1;">
-                            <label for="expiry-date">Expiry Date</label>
-                            <input type="text" id="expiry-date" placeholder="MM / YY" required>
-                            <div class="error-message">Expiry date is required.</div>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" placeholder="•••" required>
-                            <div class="error-message">CVV is required.</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="secure-payment-info">
-                    🔒 This is a secure payment. Your card details are not stored on our server.
-                </div>
-                
-                <div class="form-group" style="margin-top: 20px;">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="terms" name="terms" required>
-                        <label for="terms">I agree to the <a href="#" target="_blank">Terms & Conditions</a> and <a href="#" target="_blank">Refund Policy</a>.</label>
-                    </div>
-                    <div class="error-message">You must agree to the terms.</div>
-                </div>
-                
-                <div class="button-group">
-                    <button type="button" class="btn btn-prev">&larr; Previous</button>
-                    <button type="submit" class="btn btn-submit">Pay & Post Ad</button>
-                </div>
-            </div>
-        </form>
-        
-        <div class="loader-container" id="loader">
-            <div class="loader"></div>
-            <p>Processing your payment and posting your ad... Please wait.</p>
-        </div>
+  <script>
+    // ✅ Your Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDb2cl7lsypR1ZoqHGD-mKhzN_lnDcyVEQ",
+      authDomain: "website-6a5f1.firebaseapp.com",
+      databaseURL: "https://website-6a5f1-default-rtdb.firebaseio.com",
+      projectId: "website-6a5f1",
+      storageBucket: "website-6a5f1.firebasestorage.app",
+      messagingSenderId: "510903945172",
+      appId: "1:510903945172:web:a5f5120db75c938721f841"
+    };
 
-        <div id="success-message">
-            <div class="icon">&#10004;</div>
-            <h2>Payment Successful!</h2>
-            <p>Your ad has been posted. A confirmation receipt has been sent to your email address.</p>
-        </div>
-    </div>
+    // ✅ Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const steps = document.querySelectorAll('.form-step');
-            const progressSteps = document.querySelectorAll('.progress-bar .step');
-            const form = document.getElementById('ad-payment-form');
-            let currentStep = 0;
+    // ✅ Form Submission Handler
+    document.getElementById("adForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-            const nextButtons = document.querySelectorAll('.btn-next');
-            const prevButtons = document.querySelectorAll('.btn-prev');
+      if (!document.getElementById("agree").checked) {
+        alert("You must agree to the terms.");
+        return;
+      }
 
-            nextButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    if (validateStep(currentStep)) {
-                        if (currentStep === 2) { // Before showing payment, ensure summary is correct
-                           updatePricingSummary();
-                        }
-                        changeStep(currentStep + 1);
-                    }
-                });
+      const ad = {
+        title: document.getElementById("adTitle").value,
+        description: document.getElementById("adDesc").value,
+        category: document.getElementById("adCategory").value,
+        duration: document.getElementById("adDuration").value,
+        plan: document.getElementById("adPlan").value,
+        user: {
+          fullName: document.getElementById("fullName").value,
+          email: document.getElementById("email").value,
+          phone: document.getElementById("phone").value
+        }
+      };
+
+      const amount = parseInt(ad.plan);
+
+      let handler = PaystackPop.setup({
+        key: 'pk_test_f3f2b1747ea86a11b2df8973c8c26085e6926e1d',
+        email: ad.user.email,
+        amount: amount,
+        currency: "ZAR",
+        metadata: {
+          custom_fields: [
+            { display_name: "Full Name", variable_name: "full_name", value: ad.user.fullName },
+            { display_name: "Phone", variable_name: "phone", value: ad.user.phone },
+            { display_name: "Ad Title", variable_name: "ad_title", value: ad.title }
+          ]
+        },
+        callback: function(response) {
+          ad.paymentRef = response.reference;
+          ad.status = "paid";
+          ad.createdAt = new Date();
+
+          db.collection("ads").add(ad)
+            .then(() => {
+              alert("✅ Ad posted and payment successful!");
+              document.getElementById("adForm").reset();
+            })
+            .catch((error) => {
+              alert("⚠️ Payment succeeded, but saving failed: " + error.message);
             });
+        },
+        onClose: function() {
+          alert("Payment popup closed.");
+        }
+      });
 
-            prevButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    changeStep(currentStep - 1);
-                });
-            });
-
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (validateStep(currentStep)) {
-                    // Show loader
-                    form.style.display = 'none';
-                    document.getElementById('loader').style.display = 'flex';
-                    
-                    // Simulate API call and payment processing
-                    setTimeout(() => {
-                        document.getElementById('loader').style.display = 'none';
-                        document.getElementById('success-message').style.display = 'block';
-                         document.querySelector('.progress-bar').style.display = 'none';
-                         document.querySelector('h1').textContent = 'Ad Posted Successfully!';
-                    }, 3000); // Simulate a 3-second delay
-                }
-            });
-
-            function changeStep(stepIndex) {
-                steps[currentStep].classList.remove('active');
-                progressSteps[currentStep].classList.remove('active');
-                progressSteps[currentStep].classList.add('completed');
-                
-                currentStep = stepIndex;
-                
-                steps[currentStep].classList.add('active');
-                progressSteps[currentStep].classList.add('active');
-            }
-            
-            function updatePricingSummary() {
-                const planSelect = document.getElementById('ad-plan');
-                const durationSelect = document.getElementById('ad-duration');
-                
-                const planPrice = parseFloat(planSelect.value);
-                const planName = planSelect.options[planSelect.selectedIndex].getAttribute('data-name');
-                
-                const durationMultiplier = parseFloat(durationSelect.value);
-                const durationName = durationSelect.options[durationSelect.selectedIndex].getAttribute('data-name');
-                
-                const totalPrice = (planPrice * durationMultiplier).toFixed(2);
-
-                document.getElementById('summary-plan').textContent = `${planName} ($${planPrice.toFixed(2)})`;
-                document.getElementById('summary-duration').textContent = durationName;
-                document.getElementById('summary-total').textContent = `$${totalPrice}`;
-            }
-            
-            // Add listeners to update summary in real-time if user goes back and changes options
-            document.getElementById('ad-plan').addEventListener('change', updatePricingSummary);
-            document.getElementById('ad-duration').addEventListener('change', updatePricingSummary);
-
-            function validateStep(stepIndex) {
-                let isValid = true;
-                const currentStepInputs = steps[stepIndex].querySelectorAll('[required]');
-                
-                currentStepInputs.forEach(input => {
-                    input.parentElement.querySelector('.error-message').style.display = 'none';
-                    input.classList.remove('input-error');
-
-                    let inputValid = true;
-                    if (input.type === 'checkbox') {
-                        if (!input.checked) {
-                            inputValid = false;
-                        }
-                    } else if (input.type === 'email') {
-                        // Simple email regex
-                        if (!/^\S+@\S+\.\S+$/.test(input.value.trim())) {
-                            inputValid = false;
-                        }
-                    } else {
-                        if (input.value.trim() === '') {
-                           inputValid = false;
-                        }
-                    }
-                    
-                    if (!inputValid) {
-                        isValid = false;
-                        input.classList.add('input-error');
-                        const errorContainer = input.type === 'checkbox' ? input.closest('.checkbox-group').nextElementSibling : input.nextElementSibling;
-                        if(errorContainer && errorContainer.classList.contains('error-message')) {
-                            errorContainer.style.display = 'block';
-                        }
-                    }
-                });
-
-                return isValid;
-            }
-
-            // Initial call to set default prices in summary
-            updatePricingSummary();
-        });
-    </script>
+      handler.openIframe();
+    });
+  </script>
 </body>
 </html>
